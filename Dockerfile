@@ -2,10 +2,16 @@
 
 FROM python:3.8-slim-buster
 
+# Install Redis server
+RUN apt-get update && apt-get install -y redis-server
+
 WORKDIR /python-docker
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
+
+# Install flask_sse directly
+RUN pip install flask_sse
 
 COPY . .
 
