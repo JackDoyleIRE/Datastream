@@ -11,7 +11,7 @@ redis_port = 6379
 redis_channel = "data-channel"
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = "redis://localhost"  # You need to install and run a Redis server for Flask-SSE
+app.config["REDIS_URL"] = "redis://localhost"  #Installing and runing a Redis server for Flask-SSE
 
 app.register_blueprint(sse, url_prefix='/stream')
 
