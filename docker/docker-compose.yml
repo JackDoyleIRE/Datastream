@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  flask-app:
+    build:
+      context: ./api
+      dockerfile: Dockerfile_flask
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    
+
+  apache-beam:
+    build:
+      context: ./pipeline
+      dockerfile: Dockerfile_beam
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - flask-app
+      - flink
+    environment:
+      - FLINK_JOB_SERVER_HOST=flink
+
+  flink:
+    image: apache/flink:1.14.3
+    platform: linux/amd64
+    ports:
+      - "8081:8081"
+      - "6123:6123"
+    expose:
+      - "6123"
+    command: jobmanager
+
+  redis:
+    build:
+      context: ./api
+      dockerfile: Dockerfile_flask
+    ports:
+      - "6379:6379"
+
