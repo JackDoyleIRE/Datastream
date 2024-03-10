@@ -35,6 +35,9 @@ services:
     expose:
       - "6123"
     command: jobmanager
+    network_mode: "host"
+    volumes: 
+    - /var/run/docker.sock:/var/run/docker.sock 
 
   redis:
     build:
